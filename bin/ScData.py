@@ -1,18 +1,23 @@
 import os
 import pandas
 from math import sqrt
+from . import config
 
 class CellTypeData:
     def __init__(self, name, data):
         self.name = name
         self.data = data
+
         n = len(data[0])
+        self.n = n
+
         X = data[0]
-        meanX = sum(X)/n
-        stdDeviationX = sqrt(sum(list([(x - meanX) ** 2 for x in X]))/n)
+        self.meanX = sum(X)/n
+        self.stdDeviationX = sqrt(sum(list([(x - self.meanX) ** 2 for x in X]))/n)
+       
         Y = data[1]
-        meanY = sum(Y)/n
-        self.stdDeviationY = sqrt(sum(list([(y - meanY) ** 2 for y in Y]))/n)
+        self.meanY = sum(Y)/n
+        self.stdDeviationY = sqrt(sum(list([(y - self.meanY) ** 2 for y in Y]))/n)
 
         #Calculate linear regression model for cell type data using Least Squares Method.
         #A "blast from the past" of statistics class
@@ -30,6 +35,13 @@ class CellTypeData:
             return (self.regressionSlope * x) + self.regressionCoeff
 
         self.standardizedResidualsY = list([(y - predict(x))/self.stdDeviationY for x,y in zip(X,Y)])
+        self.filterd = list([1 for x,y,yr in zip(X,Y,self.standardizedResidualsY) if \
+                                             abs(yr) < float(config["filter"]["residual_threshold"]) \
+                                             and y >= float(config["filter"]["min_genes"]) \ 
+                                             and y <= float(config["filter"]["max_genes"]) \ 
+                                             and x >= float(config["filter"]["min_umis"])  \
+                                             and x <= float(config["filter"]["max_umis"])  \
+                              else 0])
 
 class ScData:
 
