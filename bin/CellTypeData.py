@@ -51,6 +51,8 @@ class CellTypeData:
         self.params["stdDeviationX"] = stdDeviationX
         self.params["regressionSlope"] = regressionSlope
         self.params["regressionCoeff"] = regressionCoeff
+        self.params["maxX"] = max(X)
+        self.params["maxY"] = max(Y)
         #Iterate over entries and filter them according to the thresholds defined in params. 
         filterColumn = []
         for x,y,yr in zip(X,Y,self.standardizedResidualsY):
@@ -71,3 +73,19 @@ class CellTypeData:
         self.data = inputData
         self.data["quality_control"] = filterColumn
         self.data["standardized_residuals"] = self.standardizedResidualsY
+
+    def formatGraph(self)
+
+        def formatLine(varName, p1, p2, rgbArray = (150, 150, 150), lineWidth = 2):
+            return f"\nvar {varName} = \{\nx: [{p1[0]} ,{p2[0]}],\ny: [{p1[0]} ,{p2[0]}],\nmode: 'lines',\ntype: 'scatter',\nline: \{\ncolor: 'rgb{rgbArray}',\nwidth: {lineWidth}\n\}\n\};\n"
+
+        def formatData(varName, X, Y, rgbArray, markerSize):
+            return f"\nvar {varName} = \{\nx: {X},\ny: {Y},\nmode: 'markers',\ntype: 'scatter',\nmarker : \{\ncolor: 'rgb{rgbArray}',\nsize: {markerSize}\n\}\n\};\n"
+        
+        out = ""
+        out += formatLine("lower_nGenes_threshold", (0, self.params["min_ngenes"]), (self.params["maxX"], self.params["min_ngenes"])))
+        out += formatLine("upper_nGenes_threshold", (0, self.params["max_ngenes"]), (self.params["maxX"], self.params["max_ngenes"])))
+        out += formatLine("lower_numis_threshold", (self.params["min_numis"], 0), (self.params["min_numis"], self.params["maxY"]))
+        out += formatLine("upper_numis_threshold", (self.params["max_numis"], 0), (self.params["max_numis"], self.params["maxY"]))
+        out += formatData("low_error", list([umi for umi, key in zip(self.data["nUmis"], self.data["quality_keys"]) if not key.startswith("bad")])
+        out += formatData("high_error", list([umi for umi, key in zip(self.data["nUmis"], self.data["quality_keys"]) if key.startswith("bad")])

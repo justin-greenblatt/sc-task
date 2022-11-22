@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+  <html>
+      <head>
+          <meta charset="utf-8">
+          <title>GenomeWalk</title>
+          <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+      </head>
+      <body>
+	      <h1 style="font-family: Sans-serif; color: orange; border: grey;">test</h1>
+      <div id="myDiv" style="width:1000px;height:700px;"></div>
+		<script>
+var cellData = {
+  x: [1, 2, 3, 4],
+  y: [10, 15, 13, 17],
+  mode: 'markers',
+  type: 'scatter'
+};
+
+var lower_ngenes = {
+  x: [0, 20],
+  y: [3, 3],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(170, 170, 170)',
+    width: 2
+  }
+};
+
+var upper_ngenes = {
+  x: [0, 20],
+  y: [16, 16],
+  mode: 'lines',
+  type: 'scatter'
+};
+
+var lower_numis = {
+  x: [2, 2],
+  y: [0,20],
+  mode: 'lines',
+  type: 'scatter'
+};
+
+var upper_numis = {
+  x: [16, 16],
+  y: [0,20],
+  mode: 'lines',
+  type: 'scatter'
+};
+
+var data = [cellData, lower_ngenes, upper_ngenes, lower_numis, upper_numis];
+
+Plotly.newPlot('myDiv', data);
+</script>
+      </body>
+</html>
