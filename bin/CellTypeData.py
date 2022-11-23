@@ -1,6 +1,7 @@
 import os
 import pandas
 from math import sqrt
+from Graph import Graph
 
 class CellTypeData:
     def __init__(self, name, inputData, geneStdThreshold, umiStdThreshold, errorStdThreshold):
@@ -71,39 +72,19 @@ class CellTypeData:
         self.data["quality_control"] = filterColumn
         self.data["standardized_residuals"] = self.standardizedResidualsY
 
-    def formatGraph(self):
+    #Define Linear regression function
+    def predict(self,x):
+        return (self.params["regressionSlope"] * x) + self.params["regressionCoeff"]
 
 
-def formatData(varName, X, Y, rgbArray, markerSize):
-    return f"""
-var cellData = {{
-  x: [1, 2, 3, 4],
-  y: [10, 15, 13, 17],
-  mode: 'markers',
-  type: 'scatter'
-}};
-"""
 
-def formatLine(varName, p1, p2, rgbArray = (150, 150, 150), lineWidth = 2):
-    return f"""
-var lower_ngenes = {{
-  x: [0, 20],
-  y: [3, 3],
-  mode: 'lines',
-  type: 'scatter',
-  name: 'nGenes',
-  line: {{
-    color: 'rgb(170, 170, 170)',
-    width: 2
-  }}
-}};
-"""
-
-       
-        out = ""
-        out += formatLine("lower_nGenes_threshold", (0, self.params["min_ngenes"]), (self.params["maxX"], self.params["min_ngenes"])))
-        out += formatLine("upper_nGenes_threshold", (0, self.params["max_ngenes"]), (self.params["maxX"], self.params["max_ngenes"])))
-        out += formatLine("lower_numis_threshold", (self.params["min_numis"], 0), (self.params["min_numis"], self.params["maxY"]))
-        out += formatLine("upper_numis_threshold", (self.params["max_numis"], 0), (self.params["max_numis"], self.params["maxY"]))
-        out += formatData("low_error", list([umi for umi, key in zip(self.data["nUmis"], self.data["quality_keys"]) if not key.startswith("bad")])
-        out += formatData("high_error", list([umi for umi, key in zip(self.data["nUmis"], self.data["quality_keys"]) if key.startswith("bad")])
+    def getGraph(self):
+        g = Graph(self.name)
+        g.addLine("lower_nGenes_threshold", (0, self.params["min_ngenes"]), (self.params["maxX"], self.params["min_ngenes"])))
+        g.addLine("upper_nGenes_threshold", (0, self.params["max_ngenes"]), (self.params["maxX"], self.params["max_ngenes"])))
+        g.addLine("lower_numis_threshold", (self.params["min_numis"], 0), (self.params["min_numis"], self.params["maxY"]))
+        g.addLine("upper_numis_threshold", (self.params["max_numis"], 0), (self.params["max_numis"], self.params["maxY"]))
+        g.addLine("linea_regression", (0, self.params["regressionCoeff"]), (self.params["maxX"], self.predict(self.params["maxX"])))
+        g.addData("low_error", list([umi for umi, key in zip(self.data["nUmis"], self.data["quality_keys"]) if not key.startswith("bad")])
+        g.addData("high_error", list([umi for umi, key in zip(self.data["nUmis"], self.data["quality_keys"]) if key.startswith("bad")])
+        return g
