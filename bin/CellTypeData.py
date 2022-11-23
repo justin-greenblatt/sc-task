@@ -3,7 +3,7 @@ import pandas
 from math import sqrt
 
 class CellTypeData:
-    def __init__(self, name, inputData, geneStdThreshold, umiStdThreshold, residualThreshold):
+    def __init__(self, name, inputData, geneStdThreshold, umiStdThreshold, errorStdThreshold):
         self.name = name
 
         #Calculating Mean and std for genes and umi. Also assigning X to Umis and Y to genes
@@ -53,35 +53,53 @@ class CellTypeData:
         self.params["regressionCoeff"] = regressionCoeff
         self.params["maxX"] = max(X)
         self.params["maxY"] = max(Y)
-        #Iterate over entries and filter them according to the thresholds defined in params. 
-        filterColumn = []
-        for x,y,yr in zip(X,Y,self.standardizedResidualsY):
-            if abs(yr) > self.params["residual_threshold"]:
-                filterColumn.append("bad gene/umi ratio")
-            elif y >= self.params["max_genes"]:
-                filterColumn.append("to many genes")
-            elif y <= self.params["min_genes"]:
-                filterColumn.append("not enough genes")
-            elif x <= self.params["min_umis"]:
-                filterColumn.append("not enough UMIs")
-            elif x >= self.params["max_umis"]:
-                filterColumn.append("to many UMIs")
-            else:
-                filterColumn.append("ok")
+       
+        #Perform QC and append results to data
+        self.data["ratio_error/std"] = standardizedResidualsY
+
+        self.data["bad_ratio_qc"] = list([1 if abs(yr) > self.params["residual_threshold"] else 0 for yr in standardizedResidualsY])
+        self.data["to_many_genes_qc"] = list([1 if y >= self.params["max_genes"] else 0 for y in Y])
+                
+        self.data["not_enough_genes_qc"] = list([1 if y <= self.params["min_genes"] else 0 for y in Y])
+
+        self.data["to_many_umis_qc"] = list([1 if x >= self.params["max_umis"] else 0 for x in X])
+            
+        self.data["not_enough_umis_qc"] = list([1 if x <= self.params["min_umis"] else 0 for x in X])
 
         #Data holding object for this Cell type
         self.data = inputData
         self.data["quality_control"] = filterColumn
         self.data["standardized_residuals"] = self.standardizedResidualsY
 
-    def formatGraph(self)
+    def formatGraph(self):
 
-        def formatLine(varName, p1, p2, rgbArray = (150, 150, 150), lineWidth = 2):
-            return f"\nvar {varName} = \{\nx: [{p1[0]} ,{p2[0]}],\ny: [{p1[0]} ,{p2[0]}],\nmode: 'lines',\ntype: 'scatter',\nline: \{\ncolor: 'rgb{rgbArray}',\nwidth: {lineWidth}\n\}\n\};\n"
 
-        def formatData(varName, X, Y, rgbArray, markerSize):
-            return f"\nvar {varName} = \{\nx: {X},\ny: {Y},\nmode: 'markers',\ntype: 'scatter',\nmarker : \{\ncolor: 'rgb{rgbArray}',\nsize: {markerSize}\n\}\n\};\n"
-        
+def formatData(varName, X, Y, rgbArray, markerSize):
+    return f"""
+var cellData = {{
+  x: [1, 2, 3, 4],
+  y: [10, 15, 13, 17],
+  mode: 'markers',
+  type: 'scatter'
+}};
+"""
+
+def formatLine(varName, p1, p2, rgbArray = (150, 150, 150), lineWidth = 2):
+    return f"""
+var lower_ngenes = {{
+  x: [0, 20],
+  y: [3, 3],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {{
+    color: 'rgb(170, 170, 170)',
+    width: 2
+  }}
+}};
+"""
+
+       
         out = ""
         out += formatLine("lower_nGenes_threshold", (0, self.params["min_ngenes"]), (self.params["maxX"], self.params["min_ngenes"])))
         out += formatLine("upper_nGenes_threshold", (0, self.params["max_ngenes"]), (self.params["maxX"], self.params["max_ngenes"])))
