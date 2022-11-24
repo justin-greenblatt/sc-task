@@ -62,6 +62,13 @@ class RegressionQC:
         self.data["not_enough_genes_qc"] = list([1 if y <= self.params["min_genes"] else 0 for y in Y])
         self.data["to_many_umis_qc"] = list([1 if x >= self.params["max_umis"] else 0 for x in X])
         self.data["not_enough_umis_qc"] = list([1 if x <= self.params["min_umis"] else 0 for x in X])
+        self.data["failed_dist_qc"] = list([1 if 1 in (a,b,c,d) else 0 for a,b,c,d in zip(self.data["to_many_genes_qc"],\
+                                                                                          self.data["not_enough_genes_qc"],\
+                                                                                          self.data["to_many_umis_qc"],\
+                                                                                          self.data["not_enough_umis_qc"])])
+        self.data["ok_qc"] = list([1 if not 1 in (a,b) else 0 for a,b in zip(self.data["bad_ratio_qc"],\
+                                                                                          self.data["failed_dist_qc"])])
+
 
     #Define Linear regression function
     def predict(self,x):
@@ -78,9 +85,11 @@ class RegressionQC:
         g.addLine("lower_numis_threshold", (self.params["min_umis"], 0), (self.params["min_umis"], self.params["maxY"]))
         g.addLine("upper_numis_threshold", (self.params["max_umis"], 0), (self.params["max_umis"], self.params["maxY"]))
         g.addLine("linea_regression", (0, self.params["regressionCoeff"]), (self.params["maxX"], self.predict(self.params["maxX"])), (100,100,250),4)
-        g.addData("low_error", list([umi for umi, k in zip(self.data["nUMIs"], self.data["bad_ratio_qc"]) if k == 0]),\
-                               list([gene for gene, k in zip(self.data["nGenes"], self.data["bad_ratio_qc"]) if k == 0]))
+        g.addData("good", list([umi for umi, k in zip(self.data["nUMIs"], self.data["failed_dist_qc"]) if k == 0]),\
+                               list([gene for gene, k in zip(self.data["nGenes"], self.data["failed_dist_qc"]) if k == 0]))
+        g.addData("cut", list([umi for umi, k in zip(self.data["nUMIs"], self.data["failed_dist_qc"]) if k == 1]),\
+                               list([gene for gene, k in zip(self.data["nGenes"], self.data["failed_dist_qc"]) if k == 1]),(250,150,150))
         g.addData("high_error", list([umi for umi, k in zip(self.data["nUMIs"], self.data["bad_ratio_qc"]) if k == 1]),\
-                                list([gene for gene, k in zip(self.data["nGenes"], self.data["bad_ratio_qc"]) if k == 1]),(250, 80,80))
+                                list([gene for gene, k in zip(self.data["nGenes"], self.data["bad_ratio_qc"]) if k == 1]),(250, 80,80), 7)
         g.addMetadata(self.getMetadata())
         return g

@@ -1,5 +1,5 @@
 from Dataset import Dataset
-from sys import argv
+from sys import argv, exit
 import os
 import configparser
 
@@ -12,7 +12,12 @@ if __name__ == "__main__":
             standardDeviationCuttof = float(argv[3])
             d.runQC(standardDeviationCuttof)
         except:
-            print("Incorrect Standard deviation parameter")
+            #try:
+            d.runQC(configPath = argv[3])
+            #except:
+                
+            #    print(f"Incorrect config Path or config file: {argv[3]}\nplease reffer to sc-task/exampleConfig.ini for config format.\nAborting analisys :(")
+            #    exit(1)
 
     else:
         d.runQC()

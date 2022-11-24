@@ -50,4 +50,4 @@ var {name} = {{
         self.metadata = metadata
 
     def getMetadata(self):
-        return "\t".join([f"{key}={round(value, 2)}" for key,value in self.metadata.items()])
+        return "\n".join([f"<p>{key}={round(value, 2)}</p>" for key,value in self.metadata.items()])

@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>datatest</title>
+        <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
+    </head>
+    <body>
+	    <h1 style="font-family: Sans-serif; color: orange; border: grey;">test</h1>
+
+        
+<p>residual_threshold=0.5</p>
+<p>min_genes=308.9</p>
+<p>max_genes=2029.39</p>
+<p>min_umis=979.6</p>
+<p>max_umis=6738.68</p>
+<p>meanX=3859.14</p>
+<p>meanY=1169.14</p>
+<p>stdDeviationY=430.12</p>
+<p>stdDeviationX=2215.03</p>
+<p>regressionSlope=0.19</p>
+<p>regressionCoeff=453.62</p>
+<p>maxX=8385</p>
+<p>maxY=2217</p>
+
+<div id="T" style="width:1000px;height:700px;"></div>
+
+<p>residual_threshold=0.5</p>
+<p>min_genes=338.77</p>
+<p>max_genes=1468.23</p>
+<p>min_umis=692.64</p>
+<p>max_umis=4626.0</p>
+<p>meanX=2659.32</p>
+<p>meanY=903.5</p>
+<p>stdDeviationY=376.48</p>
+<p>stdDeviationX=1512.83</p>
+<p>regressionSlope=0.23</p>
+<p>regressionCoeff=291.02</p>
+<p>maxX=7126</p>
+<p>maxY=1807</p>
+
+<div id="B" style="width:1000px;height:700px;"></div>
+
+<script>
+
+
+var T_lower_nGenes_threshold = {
+  x: [0,8385],
+  y: [308.8958747312363,308.8958747312363],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(250, 200, 200)',
+    width: 1
+  }
+};
+
+
+var T_upper_nGenes_threshold = {
+  x: [0,8385],
+  y: [2029.389839554478,2029.389839554478],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(250, 200, 200)',
+    width: 1
+  }
+};
+
+
+var T_lower_numis_threshold = {
+  x: [979.6024506451358,979.6024506451358],
+  y: [0,2217],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(250, 200, 200)',
+    width: 1
+  }
+};
+
+
+var T_upper_numis_threshold = {
+  x: [6738.683263640579,6738.683263640579],
+  y: [0,2217],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(250, 200, 200)',
+    width: 1
+  }
+};
+
+
+var T_linea_regression = {
+  x: [0,8385],
+  y: [453.62435919319284,2008.275956037627],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(100, 100, 250)',
+    width: 4
+  }
+};
+
+
+var T_good = {
+  x: [2450, 3119, 5070, 3717, 3146, 1791, 6531, 1475, 3836, 1519, 1431, 2702, 2545, 3445, 4173, 6402, 2942],
+  y: [908, 1094, 1444, 1218, 1137, 779, 1515, 695, 1175, 765, 611, 1033, 895, 990, 1320, 1754, 1039],
+  mode: 'markers',
+  type: 'scatter',
+  marker: { size: 5, color: 'rgb(130, 130, 130)' }
+
+};
+
+
+var T_cut = {
+  x: [8186, 7257, 8385, 920],
+  y: [1557, 1911, 2217, 495],
+  mode: 'markers',
+  type: 'scatter',
+  marker: { size: 5, color: 'rgb(250, 150, 150)' }
+
+};
+
+
+var T_high_error = {
+  x: [8186],
+  y: [1557],
+  mode: 'markers',
+  type: 'scatter',
+  marker: { size: 7, color: 'rgb(250, 80, 80)' }
+
+};
+
+
+var B_lower_nGenes_threshold = {
+  x: [0,7126],
+  y: [338.7741602879664,338.7741602879664],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(250, 200, 200)',
+    width: 1
+  }
+};
+
+
+var B_upper_nGenes_threshold = {
+  x: [0,7126],
+  y: [1468.2258397120336,1468.2258397120336],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(250, 200, 200)',
+    width: 1
+  }
+};
+
+
+var B_lower_numis_threshold = {
+  x: [692.6369436134862,692.6369436134862],
+  y: [0,1807],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(250, 200, 200)',
+    width: 1
+  }
+};
+
+
+var B_upper_numis_threshold = {
+  x: [4626.004082027539,4626.004082027539],
+  y: [0,1807],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(250, 200, 200)',
+    width: 1
+  }
+};
+
+
+var B_linea_regression = {
+  x: [0,7126],
+  y: [291.021552694237,1932.238320082608],
+  mode: 'lines',
+  type: 'scatter',
+  name: 'nGenes',
+  line: {
+    color: 'rgb(100, 100, 250)',
+    width: 4
+  }
+};
+
+
+var B_good = {
+  x: [3656, 4216, 3452, 1368, 3863, 3301, 1709, 2276, 2041, 1240, 1418, 2356, 2553, 2707, 2974, 1608, 1987, 2444, 3933, 4073, 3052, 2356, 1197, 4492, 2347, 4279, 1761, 4572, 2386, 748, 866, 2674, 3345, 1012, 916, 3701, 3625, 3323, 2033, 1235, 1105, 1227, 2842, 3084, 1704, 2217, 3436, 3765, 1315, 2480, 3493, 2437, 1228, 2374, 2626, 2921, 2060, 2071, 799, 1361, 1650, 2672, 1426],
+  y: [1309, 1109, 1324, 797, 1063, 1125, 749, 831, 910, 621, 639, 858, 956, 963, 1100, 688, 851, 822, 1169, 1347, 822, 918, 631, 1142, 928, 1365, 608, 1318, 880, 481, 472, 1027, 627, 346, 487, 1192, 1023, 1182, 862, 586, 542, 653, 879, 925, 741, 962, 871, 748, 630, 946, 1221, 973, 641, 934, 973, 407, 778, 786, 442, 581, 706, 1086, 612],
+  mode: 'markers',
+  type: 'scatter',
+  marker: { size: 5, color: 'rgb(130, 130, 130)' }
+
+};
+
+
+var B_cut = {
+  x: [4990, 4605, 6122, 566, 5267, 631, 662, 650, 5153, 551, 4933, 5775, 7126, 6446, 562],
+  y: [1469, 1518, 1757, 106, 1465, 384, 408, 228, 1747, 305, 1445, 1499, 1807, 1793, 377],
+  mode: 'markers',
+  type: 'scatter',
+  marker: { size: 5, color: 'rgb(250, 150, 150)' }
+
+};
+
+
+var B_high_error = {
+  x: [3452, 1368, 566, 650, 3345, 5153, 3436, 3765, 2921],
+  y: [1324, 797, 106, 228, 627, 1747, 871, 748, 407],
+  mode: 'markers',
+  type: 'scatter',
+  marker: { size: 7, color: 'rgb(250, 80, 80)' }
+
+};
+
+
+var data = [T_lower_nGenes_threshold,T_upper_nGenes_threshold,T_lower_numis_threshold,T_upper_numis_threshold,T_linea_regression,T_good,T_cut,T_high_error];
+Plotly.newPlot('T', data);
+
+var data = [B_lower_nGenes_threshold,B_upper_nGenes_threshold,B_lower_numis_threshold,B_upper_numis_threshold,B_linea_regression,B_good,B_cut,B_high_error];
+Plotly.newPlot('B', data);
+
+</script>
+</body>
+</html>

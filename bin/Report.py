@@ -16,7 +16,7 @@ class Report:
 
         """
         for g in self.graphs:
-            out += f"\n<p>{g.getMetadata()}</p>\n"
+            out += f"\n{g.getMetadata()}\n"
             out += f"""\n<div id="{g.name}" style="width:1000px;height:700px;"></div>\n"""
 
         out += "\n<script>\n"
