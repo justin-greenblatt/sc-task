@@ -5,23 +5,29 @@ class Graph:
         self.groups = []
         self.traceArray = []
 
-    def addData(self, varName, X, Y, rgbArray, markerSize):
+    def getTraceArray(self):
+        return f"[{','.join(self.traceArray)}]"
+
+    def addData(self, varName, X, Y, rgbArray = (130,130,130), markerSize = 5):
+        name = self.name + '_' + varName
         out = f"""
-var {varName} = {{
+var {name} = {{
   x: {X},
   y: {Y},
   mode: 'markers',
-  type: 'scatter'
+  type: 'scatter',
+  marker: {{ size: {markerSize}, color: 'rgb{rgbArray}' }}
+
 }};
 """
         self.groups.append(out)
-        self.traceArray.append(varName)
+        self.traceArray.append(name)
         return out
 
-    def addLine(self, varName, p1, p2, rgbArray = (150, 150, 150), lineWidth = 2):
-
+    def addLine(self, varName, p1, p2, rgbArray = (250, 200, 200), lineWidth = 1):
+        name = self.name + '_' + varName
         out = f"""
-var {varName} = {{
+var {name} = {{
   x: [{p1[0]},{p2[0]}],
   y: [{p1[1]},{p2[1]}],
   mode: 'lines',
@@ -34,5 +40,14 @@ var {varName} = {{
 }};
 """
         self.groups.append(out)
-        self.traceArray.append(varName)
+        self.traceArray.append(name)
         return out
+
+    def getGraphData(self):
+        return "\n".join(self.groups) + "\n".join(self.lines)
+
+    def addMetadata(self, metadata):
+        self.metadata = metadata
+
+    def getMetadata(self):
+        return "\t".join([f"{key}={round(value, 2)}" for key,value in self.metadata.items()])
