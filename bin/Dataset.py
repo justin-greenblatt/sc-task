@@ -14,7 +14,10 @@ class Dataset:
         #separating Dataset according to cells
         numerical = ['nGenes', 'nUMIs']
         self.data = dict({c : dict({h : list([int(line[n]) if h in numerical else line[n] for line in rawData[1:] if line[headers["cell_type"]] == c]) for h,n in headers.items()}) for c in cells})
-        self.analisys = list([RegressionQC(k, self.data[k]) for k in self.data])
+
+    def runQC(self, globalStdParameter = 2):
+        std = globalStdParameter
+        self.analisys = list([RegressionQC(k, self.data[k], std, std, std) for k in self.data])
 
     def writeReport(self, reportPath):
         self.report = Report(self.name)

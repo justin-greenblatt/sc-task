@@ -4,7 +4,7 @@ from math import sqrt
 from Graph import Graph
 
 class RegressionQC:
-    def __init__(self, name, inputData, geneStdThreshold = 2, umiStdThreshold = 2, errorStdThreshold = 2):
+    def __init__(self, name, inputData, geneStdThreshold, umiStdThreshold, errorStdThreshold):
         self.name = name
         self.data = inputData
         #Calculating Mean and std for genes and umi. Also assigning X to Umis and Y to genes
